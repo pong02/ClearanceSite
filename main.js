@@ -64,7 +64,7 @@ function setupSearch() {
 }
 
 // Load CSV data
-Papa.parse('catalog.csv', {
+Papa.parse('catalogue.csv', {
   download: true,
   header: true,
   complete: results => {
