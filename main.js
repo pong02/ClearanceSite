@@ -153,5 +153,5 @@ function setupBackToTop() {
 document.addEventListener('DOMContentLoaded', () => {
   setupSearch();
   setupBackToTop();
-  selectCategory('case'); // Default tab
+  selectCategory('case'); 
 });
