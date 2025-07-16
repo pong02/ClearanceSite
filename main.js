@@ -78,13 +78,21 @@ function renderCatalog(filteredData) {
 
 function setupSearch() {
   const searchBox = document.getElementById('searchBox');
-  searchBox.addEventListener('input', () => {
+  const searchBtn = document.getElementById('searchBtn');
+
+  function performSearch() {
     const query = searchBox.value.trim().toLowerCase();
     const filtered = data.filter(row =>
       row["Status"]?.toLowerCase() !== "sold out" &&
       Object.values(row).some(val => String(val).toLowerCase().includes(query))
     );
     renderCatalog(filtered);
+  }
+
+  searchBtn.addEventListener('click', performSearch);
+
+  searchBox.addEventListener('keydown', e => {
+    if (e.key === 'Enter') performSearch();
   });
 }
 
@@ -111,5 +119,5 @@ function highlightActiveTab(category) {
 
 document.addEventListener('DOMContentLoaded', () => {
   setupSearch();
-  selectCategory('case'); // Load default tab
+  selectCategory('case'); // Default tab
 });

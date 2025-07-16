@@ -45,11 +45,33 @@
       z-index: 9999;
       display: none;
     }
+
+    #searchBarContainer {
+      display: flex;
+      gap: 5px;
+      margin-bottom: 10px;
+    }
+
+    #searchBox {
+      flex: 1;
+      padding: 8px;
+      font-size: 1em;
+    }
+
+    #searchBtn {
+      padding: 8px 12px;
+      font-size: 1em;
+      cursor: pointer;
+    }
   </style>
 </head>
 <body>
 
-  <input type="text" id="searchBox" placeholder="Search items...">
+  <div id="searchBarContainer">
+    <input type="text" id="searchBox" placeholder="Search items...">
+    <button id="searchBtn" title="Search">🔍</button>
+  </div>
+
   <div id="tabs">
     <button onclick="selectCategory('case')">Case</button>
     <button onclick="selectCategory('misc')">Misc</button>
