@@ -148,7 +148,7 @@ body {
     body {
         margin: 10px;
         font-size: 20px;
-        background-color: red;
+        background-color: red !important;
     }
 
     #tabs button {
