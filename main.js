@@ -62,15 +62,36 @@ function renderCatalog(filteredData) {
         </div>`;
     }
 
+    div.className = 'productCard';
     div.innerHTML = `
-      <strong>${row["PRODUCT_TITLE"] || "Unnamed Item"}</strong><br>
-      ${imageGalleryHtml}
-      <strong>Price:</strong> ${row["PRICE"] || "N/A"}<br>
-      ${Object.entries(row)
-        .filter(([key]) => !["IMAGES", "Status", "PRODUCT_TITLE", "PRICE"].includes(key))
-        .map(([key, val]) => `<strong>${key}:</strong> ${val}`)
-        .join("<br>")}
+      <div class="identifierDiv">
+        <div class="title">${row["PRODUCT_TITLE"] || "Unnamed Item"}</div>
+        <div class="sku">${row["PRODUCT_SKU"] || ""}</div>
+      </div>
+
+      <div class="imagesDiv">
+        ${imageGalleryHtml}
+      </div>
+
+      <div class="infoDiv">
+        <div><strong>Price:</strong> ${row["PRICE"] || "N/A"}</div>
+        <div><strong>RRP:</strong> ${row["rrp"] || "-"}</div>
+        <div><strong>Brand:</strong> ${row["BRAND"] || "-"}</div>
+      </div>
+
+      <div class="variationDiv">
+        <div><strong>Group ID:</strong> ${row["variant_group_id"] || ""}</div>
+        <div><strong>Title:</strong> ${row["variant_group_title"] || ""}</div>
+        <div><strong>Type:</strong> ${row["variant_facet_type"] || ""}</div>
+        <div><strong>Group:</strong> ${row["variant_facet_group"] || ""}</div>
+        <div><strong>Value:</strong> ${row["variant_facet_value"] || ""}</div>
+      </div>
+
+      <div class="descDiv">
+        ${row["PRODUCT_DESCRIPTION"] || ""}
+      </div>
     `;
+
 
     container.appendChild(div);
   });
