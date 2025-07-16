@@ -1,20 +1,17 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8">
-  <title>Clearance Catalog</title>
-  <style>
-    body { font-family: sans-serif; margin: 20px; }
-    .item { border-bottom: 1px solid #ccc; padding: 10px; }
-    img { max-height: 100px; }
-  </style>
-</head>
 <body>
-  <h1>Clearance Catalog</h1>
-  <input type="text" id="searchBox" placeholder="Search..." style="width: 100%; padding: 10px;">
+  <input type="text" id="searchBox" placeholder="Search items...">
+  <div id="tabs">
+    <button onclick="selectCategory('case')">Case</button>
+    <button onclick="selectCategory('misc')">Misc</button>
+    <button onclick="selectCategory('others')">Others</button>
+    <button onclick="selectCategory('pc')">PC</button>
+    <button onclick="selectCategory('pet')">Pet</button>
+    <button onclick="selectCategory('shoe')">Shoe</button>
+    <button onclick="selectCategory('tg')">TG</button>
+    <button onclick="selectCategory('watch')">Watch</button>
+  </div>
   <div id="catalog"></div>
 
-  <script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
   <script src="main.js"></script>
 </body>
-</html>
