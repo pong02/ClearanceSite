@@ -57,7 +57,7 @@ function renderCatalog(filteredData) {
       imageGalleryHtml = `
         <div style="display: flex; overflow-x: auto; gap: 10px; padding: 5px 0;">
           ${imageUrls.map(url =>
-            `<img src="${url}" alt="Item Image" style="max-height: 100px; border: 1px solid #ccc;">`
+            `<img src="${url}" alt="Item Image">`
           ).join('')}
         </div>`;
     }
