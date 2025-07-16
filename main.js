@@ -1,6 +1,7 @@
 let data = [];
 let currentCategory = "";
 const cache = {};
+let loaderStartTime = 0;
 
 function selectCategory(category) {
   if (currentCategory === category) return;
@@ -9,11 +10,12 @@ function selectCategory(category) {
   document.getElementById('searchBox').value = "";
   highlightActiveTab(category);
   showLoader(true);
+  loaderStartTime = performance.now();
 
   if (cache[category]) {
     data = cache[category];
     renderCatalog(data);
-    showLoader(false);
+    hideLoaderAfterMinimumDelay();
     return;
   }
 
@@ -24,12 +26,12 @@ function selectCategory(category) {
       data = results.data.filter(row => Object.values(row).some(cell => cell !== ""));
       cache[category] = data;
       renderCatalog(data);
-      showLoader(false);
+      hideLoaderAfterMinimumDelay();
     },
     error: err => {
       console.error(`Failed to load ${category}.csv:`, err);
       document.getElementById('catalog').innerText = `Failed to load ${category}.csv`;
-      showLoader(false);
+      hideLoaderAfterMinimumDelay();
     }
   });
 }
@@ -90,6 +92,16 @@ function showLoader(visible) {
   document.getElementById('loadingBar').style.display = visible ? 'block' : 'none';
 }
 
+function hideLoaderAfterMinimumDelay() {
+  const elapsed = performance.now() - loaderStartTime;
+  const remaining = 500 - elapsed;
+  if (remaining > 0) {
+    setTimeout(() => showLoader(false), remaining);
+  } else {
+    showLoader(false);
+  }
+}
+
 function highlightActiveTab(category) {
   const buttons = document.querySelectorAll("#tabs button");
   buttons.forEach(btn => {
@@ -99,5 +111,5 @@ function highlightActiveTab(category) {
 
 document.addEventListener('DOMContentLoaded', () => {
   setupSearch();
-  selectCategory('case'); // Default tab
+  selectCategory('case'); // Load default tab
 });
