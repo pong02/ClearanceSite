@@ -145,10 +145,15 @@ body {
 }
 
 @media (max-width: 768px) {
+
+    html, body {
+        max-width: 100%;
+        overflow-x: hidden;
+    }
+
     body {
         margin: 10px;
         font-size: 20px;
-        background-color: red !important;
     }
 
     #tabs button {
@@ -211,9 +216,6 @@ body {
         right: 20px;
         font-size: 20px;
         padding: 18px 22px;
-    }
-
-    #backToTop::after {
-      content: "↑";
+        content: "↑";
     }
 }
