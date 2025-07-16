@@ -158,7 +158,7 @@ body {
     .productCard {
         width: 100%;
         padding: 12px;
-        font-size: 13px;
+        font-size: 20px;
     }
 
     .identifierDiv {
@@ -167,7 +167,7 @@ body {
     }
 
     .identifierDiv .title {
-        font-size: 15px;
+        font-size: 25px;
     }
 
     .identifierDiv .sku {
@@ -182,8 +182,8 @@ body {
     }
 
     .imagesDiv img {
-        width: 150px;
-        height: 180px;
+        width: 50vw;
+        height: 50vw;
         object-fit: cover;
         flex-shrink: 0;
     }
@@ -208,7 +208,7 @@ body {
     #backToTop {
         bottom: 20px;
         right: 20px;
-        font-size: 14px;
-        padding: 8px 12px;
+        font-size: 20px;
+        padding: 18px 22px;
     }
 }
