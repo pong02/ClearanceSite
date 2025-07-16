@@ -1,4 +1,54 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Catalog Viewer</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 20px;
+    }
+
+    #tabs button {
+      margin: 5px;
+      padding: 10px 20px;
+      border: none;
+      background-color: #ddd;
+      cursor: pointer;
+    }
+
+    #tabs button.active {
+      background-color: #888;
+      color: white;
+    }
+
+    #catalog {
+      margin-top: 20px;
+    }
+
+    .item {
+      border: 1px solid #ccc;
+      padding: 10px;
+      margin-bottom: 15px;
+    }
+
+    #loadingBar {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      background: #444;
+      color: white;
+      font-weight: bold;
+      text-align: center;
+      padding: 10px;
+      z-index: 9999;
+      display: none;
+    }
+  </style>
+</head>
 <body>
+
   <input type="text" id="searchBox" placeholder="Search items...">
   <div id="tabs">
     <button onclick="selectCategory('case')">Case</button>
@@ -10,8 +60,12 @@
     <button onclick="selectCategory('tg')">TG</button>
     <button onclick="selectCategory('watch')">Watch</button>
   </div>
+
+  <div id="loadingBar">Loading items, please wait...</div>
   <div id="catalog"></div>
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.3.2/papaparse.min.js"></script>
   <script src="main.js"></script>
+
 </body>
+</html>
