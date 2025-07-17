@@ -162,7 +162,7 @@ body {
     }
 
     .productCard {
-        width: 90%;
+        width: 92%;
         padding: 12px;
         margin: 3px 0px 3px 0px;
         font-size: 20px;
@@ -206,9 +206,13 @@ body {
         gap: 8px;
     }
 
-    #searchBox,
+    #searchBox {
+        width: 82%;
+        font-size: 1em;
+    }
+
     #searchBtn {
-        width: 90%;
+        width: 10%;
         font-size: 1em;
     }
 
