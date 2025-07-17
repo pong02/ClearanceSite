@@ -202,17 +202,17 @@ body {
     }
 
     #searchBarContainer {
-        flex-direction: column;
+        flex-direction: row;
         gap: 8px;
     }
 
     #searchBox {
-        width: 82%;
+        width: 76%;
         font-size: 1em;
     }
 
     #searchBtn {
-        width: 10%;
+        width: 16%;
         font-size: 1em;
     }
 
