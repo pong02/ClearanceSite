@@ -162,7 +162,7 @@ body {
     }
 
     .productCard {
-        width: 94%;
+        width: 90%;
         padding: 12px;
         margin: 3px 0px 3px 0px;
         font-size: 20px;
@@ -189,7 +189,7 @@ body {
     }
 
     .imagesDiv img {
-        width: 100%;
+        width: 95%;
         height: 50vw;
         object-fit: cover;
         flex-shrink: 0;
@@ -208,7 +208,7 @@ body {
 
     #searchBox,
     #searchBtn {
-        width: 100%;
+        width: 90%;
         font-size: 1em;
     }
 
