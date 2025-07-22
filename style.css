@@ -225,17 +225,24 @@ body {
         content: "↑";
     }
 
-    .topBarButtons button:not(#menuToggle) {
+    .brand {
         display: none;
-    }
-
-    #menuToggle {
-        display: block;
-    }
-
-    .mobileMenu.open {
-        display: flex;
-    }
+      }
+    
+      #topBar {
+        justify-content: center;
+        padding: 10px;
+      }
+    
+      .topBarButtons {
+        flex-wrap: wrap;
+        justify-content: center;
+      }
+    
+      .topBarButtons button {
+        font-size: 18px;
+        padding: 10px 16px;
+      }
 }
 
 #topBar {
@@ -247,62 +254,33 @@ body {
     color: white;
     z-index: 1001;
     box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-}
-
-.topBarContent {
     display: flex;
-    justify-content: space-between;
     align-items: center;
-    padding: 12px 20px;
+    justify-content: space-between;
+    padding: 10px 20px;
+    flex-wrap: wrap;
 }
 
 .brand {
-    font-weight: bold;
     font-size: 20px;
+    font-weight: bold;
+}
+
+.topBarButtons {
+    display: flex;
+    gap: 10px;
 }
 
 .topBarButtons button {
-    margin-left: 12px;
-    padding: 6px 12px;
+    padding: 8px 12px;
     background-color: #444;
     border: none;
     color: white;
     font-size: 14px;
-    cursor: pointer;
     border-radius: 3px;
+    cursor: pointer;
 }
 
 .topBarButtons button:hover {
-    background-color: #666;
-}
-
-#menuToggle {
-    display: none;
-    font-size: 20px;
-    background: none;
-    border: none;
-    color: white;
-    cursor: pointer;
-}
-
-.mobileMenu {
-    display: none;
-    flex-direction: column;
-    background-color: #333;
-    padding: 10px 20px;
-}
-
-.mobileMenu button {
-    background-color: #444;
-    border: none;
-    color: white;
-    padding: 10px;
-    font-size: 16px;
-    text-align: left;
-    margin-bottom: 8px;
-    border-radius: 3px;
-}
-
-.mobileMenu button:hover {
     background-color: #555;
 }

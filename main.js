@@ -159,3 +159,23 @@ document.addEventListener('DOMContentLoaded', () => {
   setupBackToTop();
   selectCategory('case'); 
 });
+
+document.addEventListener("DOMContentLoaded", function () {
+  fetch('data/booking.txt')
+    .then(res => {
+      if (!res.ok) throw new Error("Could not load booking URL");
+      return res.text();
+    })
+    .then(url => {
+      const bookingBtn = document.getElementById("bookingBtn");
+      bookingBtn.addEventListener("click", () => {
+        window.open(url.trim(), '_blank');
+      });
+    })
+    .catch(err => {
+      console.error("Booking link error:", err);
+      const bookingBtn = document.getElementById("bookingBtn");
+      bookingBtn.disabled = true;
+      bookingBtn.textContent = "Unavailable";
+    });
+});
