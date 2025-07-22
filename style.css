@@ -145,6 +145,47 @@ body {
     color: #333;
 }
 
+#topBar {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    background-color: #222;
+    color: white;
+    z-index: 1001;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 10px 20px;
+    flex-wrap: wrap;
+}
+
+.brand {
+    font-size: 20px;
+    font-weight: bold;
+}
+
+.topBarButtons {
+    display: flex;
+    gap: 10px;
+    margin-right: 30px;
+}
+
+.topBarButtons button {
+    padding: 8px 12px;
+    background-color: #444;
+    border: none;
+    color: white;
+    font-size: 14px;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.topBarButtons button:hover {
+    background-color: #555;
+}
+
 @media (max-width: 768px) {
 
     html, body {
@@ -227,60 +268,20 @@ body {
 
     .brand {
         display: none;
-      }
-    
-      #topBar {
+    }
+
+    #topBar {
         justify-content: center;
         padding: 10px;
-      }
-    
-      .topBarButtons {
+    }
+
+    .topBarButtons {
         flex-wrap: wrap;
         justify-content: center;
-      }
-    
-      .topBarButtons button {
+    }
+
+    .topBarButtons button {
         font-size: 18px;
         padding: 10px 16px;
-      }
-}
-
-#topBar {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    background-color: #222;
-    color: white;
-    z-index: 1001;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.2);
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 10px 20px;
-    flex-wrap: wrap;
-}
-
-.brand {
-    font-size: 20px;
-    font-weight: bold;
-}
-
-.topBarButtons {
-    display: flex;
-    gap: 10px;
-}
-
-.topBarButtons button {
-    padding: 8px 12px;
-    background-color: #444;
-    border: none;
-    color: white;
-    font-size: 14px;
-    border-radius: 3px;
-    cursor: pointer;
-}
-
-.topBarButtons button:hover {
-    background-color: #555;
+    }
 }
