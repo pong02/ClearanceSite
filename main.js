@@ -157,7 +157,7 @@ function setupBackToTop() {
 document.addEventListener('DOMContentLoaded', () => {
   setupSearch();
   setupBackToTop();
-  selectCategory('case'); 
+  selectCategory('tg'); 
 });
 
 document.addEventListener("DOMContentLoaded", function () {
