@@ -1,0 +1,29 @@
+name: Deploy to GCS
+
+on:
+  push:
+    branches:
+      - main  # or change to your default branch
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Authenticate to Google Cloud
+        uses: google-github-actions/auth@v1
+        with:
+          credentials_json: '${{ secrets.GCP_SA_KEY }}'
+
+      - name: Set up gcloud CLI
+        uses: google-github-actions/setup-gcloud@v1
+        with:
+          project_id: clearance-site-6969
+          install_components: 'gsutil'
+
+      - name: Deploy to GCS
+        run: |
+          gsutil -m rsync -r ./ gs://clearance-site-bucket
