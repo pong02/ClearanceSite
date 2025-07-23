@@ -1,9 +1,9 @@
-name: Deploy to GCS
+name: Deploy Optimized Site to GCS
 
 on:
   push:
     branches:
-      - main  # or change to your default branch
+      - live
 
 jobs:
   deploy:
@@ -12,6 +12,11 @@ jobs:
     steps:
       - name: Checkout repository
         uses: actions/checkout@v3
+
+      - name: Set up Python (for gsutil)
+        uses: actions/setup-python@v4
+        with:
+          python-version: '3.x'
 
       - name: Authenticate to Google Cloud
         uses: google-github-actions/auth@v1
@@ -24,6 +29,37 @@ jobs:
           project_id: clearance-site-6969
           install_components: 'gsutil'
 
-      - name: Deploy to GCS
+      - name: Gzip compress key files and prepare public folder
         run: |
-          gsutil -m rsync -r ./ gs://clearance-site-bucket
+          mkdir -p public
+          for file in $(find . -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.csv" \)); do
+            mkdir -p "public/$(dirname "$file")"
+            gzip -c "$file" > "public/$file"
+          done
+          # Copy remaining assets (images, fonts, etc.) without compression
+          rsync -av --exclude='*.html' --exclude='*.css' --exclude='*.js' --exclude='*.csv' ./ public/
+
+      - name: Upload compressed and static assets to GCS
+        run: |
+          find public -type f | while read file; do
+            ext="${file##*.}"
+            target_path="${file#public/}"
+            case "$ext" in
+              html) mime="text/html"; encoding="gzip" ;;
+              css)  mime="text/css"; encoding="gzip" ;;
+              js)   mime="application/javascript"; encoding="gzip" ;;
+              csv)  mime="text/csv"; encoding="gzip" ;;
+              *)    mime=$(file --mime-type -b "$file"); encoding="" ;;
+            esac
+
+            if [[ "$encoding" == "gzip" ]]; then
+              gsutil -h "Content-Type:$mime" \
+                     -h "Content-Encoding:$encoding" \
+                     -h "Cache-Control:public,max-age=31536000" \
+                     cp "$file" gs://clearance-site-bucket/$target_path
+            else
+              gsutil -h "Content-Type:$mime" \
+                     -h "Cache-Control:public,max-age=31536000" \
+                     cp "$file" gs://clearance-site-bucket/$target_path
+            fi
+          done
