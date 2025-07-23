@@ -29,15 +29,15 @@ jobs:
           project_id: clearance-site-6969
           install_components: 'gsutil'
 
-      - name: Gzip HTML/CSS/JS and prepare public folder
+      - name: Gzip compress key files and prepare public folder
         run: |
           mkdir -p public
-          for file in $(find . -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" \)); do
+          for file in $(find . -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.csv" \)); do
             mkdir -p "public/$(dirname "$file")"
             gzip -c "$file" > "public/$file"
           done
-          # Copy non-compressible assets (images, fonts, etc.)
-          rsync -av --exclude='*.html' --exclude='*.css' --exclude='*.js' ./ public/
+          # Copy remaining assets (images, fonts, etc.) without compression
+          rsync -av --exclude='*.html' --exclude='*.css' --exclude='*.js' --exclude='*.csv' ./ public/
 
       - name: Upload compressed and static assets to GCS
         run: |
@@ -48,6 +48,7 @@ jobs:
               html) mime="text/html"; encoding="gzip" ;;
               css)  mime="text/css"; encoding="gzip" ;;
               js)   mime="application/javascript"; encoding="gzip" ;;
+              csv)  mime="text/csv"; encoding="gzip" ;;
               *)    mime=$(file --mime-type -b "$file"); encoding="" ;;
             esac
 
@@ -62,6 +63,3 @@ jobs:
                      cp "$file" gs://clearance-site-bucket/$target_path
             fi
           done
-
-
-
