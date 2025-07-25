@@ -32,34 +32,8 @@ jobs:
       - name: Gzip compress key files and prepare public folder
         run: |
           mkdir -p public
-          for file in $(find . -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.csv" \)); do
-            mkdir -p "public/$(dirname "$file")"
-            gzip -c "$file" > "public/$file"
-          done
-          # Copy remaining assets (images, fonts, etc.) without compression
-          rsync -av --exclude='*.html' --exclude='*.css' --exclude='*.js' --exclude='*.csv' ./ public/
 
-      - name: Upload compressed and static assets to GCS
-        run: |
-          find public -type f | while read file; do
-            ext="${file##*.}"
-            target_path="${file#public/}"
-            case "$ext" in
-              html) mime="text/html"; encoding="gzip" ;;
-              css)  mime="text/css"; encoding="gzip" ;;
-              js)   mime="application/javascript"; encoding="gzip" ;;
-              csv)  mime="text/csv"; encoding="gzip" ;;
-              *)    mime=$(file --mime-type -b "$file"); encoding="" ;;
-            esac
-
-            if [[ "$encoding" == "gzip" ]]; then
-              gsutil -h "Content-Type:$mime" \
-                     -h "Content-Encoding:$encoding" \
-                     -h "Cache-Control:public,max-age=31536000" \
-                     cp "$file" gs://clearance-site-bucket/$target_path
-            else
-              gsutil -h "Content-Type:$mime" \
-                     -h "Cache-Control:public,max-age=31536000" \
-                     cp "$file" gs://clearance-site-bucket/$target_path
-            fi
-          done
+          # Compress selected file types, excluding sensitive paths
+          find . \
+            -type f \
+            \( -name "*.html" -o -nam*
