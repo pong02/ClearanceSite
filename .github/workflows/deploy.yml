@@ -29,11 +29,39 @@ jobs:
           project_id: clearance-site-6969
           install_components: 'gsutil'
 
-      - name: Gzip compress key files and prepare public folder
+      - name: Gzip compress and upload to GCS
         run: |
-          mkdir -p public
+          find . -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.csv" \) \
+            ! -path "./.git/*" \
+            ! -path "./.github/*" \
+            ! -name ".DS_Store" \
+            ! -name "gha-creds-*.json" | while read file; do
+              ext="${file##*.}"
+              target_path="${file#./}"
+              case "$ext" in
+                html) mime="text/html"; encoding="gzip" ;;
+                css)  mime="text/css"; encoding="gzip" ;;
+                js)   mime="application/javascript"; encoding="gzip" ;;
+                csv)  mime="text/csv"; encoding="gzip" ;;
+              esac
 
-          # Compress selected file types, excluding sensitive paths
-          find . \
-            -type f \
-            \( -name "*.html" -o -nam*
+              gsutil -h "Content-Type:$mime" \
+                     -h "Content-Encoding:$encoding" \
+                     -h "Cache-Control:public,max-age=31536000" \
+                     cp <(gzip -c "$file") gs://clearance-site-bucket/$target_path
+          done
+
+          # Upload all other static assets (e.g., images), excluding sensitive files
+          find . -type f \
+            ! \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.csv" \) \
+            ! -path "./.git/*" \
+            ! -path "./.github/*" \
+            ! -name ".DS_Store" \
+            ! -name "gha-creds-*.json" | while read file; do
+              target_path="${file#./}"
+              mime=$(file --mime-type -b "$file")
+
+              gsutil -h "Content-Type:$mime" \
+                     -h "Cache-Control:public,max-age=31536000" \
+                     cp "$file" gs://clearance-site-bucket/$target_path
+          done
