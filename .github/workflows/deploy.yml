@@ -29,7 +29,7 @@ jobs:
           project_id: clearance-site-6969
           install_components: 'gsutil'
 
-      - name: Gzip compress and upload to GCS
+      - name: Gzip compress and upload to GCS (with Vary header)
         run: |
           find . -type f \( -name "*.html" -o -name "*.css" -o -name "*.js" -o -name "*.csv" \) \
             ! -path "./.git/*" \
@@ -47,6 +47,7 @@ jobs:
 
               gsutil -h "Content-Type:$mime" \
                      -h "Content-Encoding:$encoding" \
+                     -h "Vary: Accept-Encoding" \
                      -h "Cache-Control:public,max-age=31536000" \
                      cp <(gzip -c "$file") gs://clearance-site-bucket/$target_path
           done
