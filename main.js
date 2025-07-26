@@ -40,63 +40,84 @@ function renderCatalog(filteredData) {
   const container = document.getElementById('catalog');
   container.innerHTML = '';
 
-  filteredData.forEach(row => {
+  filteredData.forEach((row, index) => {
     if (row["Status"]?.toLowerCase() === "sold out") return;
 
-    const div = document.createElement('div');
-    div.className = 'productCard';
-
-    const imageField = row["IMAGES"] || "";
-    const imageUrls = imageField
-      .split("|")
-      .map(url => url.trim())
-      .filter(url => url.length > 0);
-
-    let imageGalleryHtml = "";
-    if (imageUrls.length > 0) {
-      imageGalleryHtml = `
-        <div style="display: flex; overflow-x: auto; gap: 10px; padding: 5px 0;">
-          ${imageUrls.map(url =>
-            `<img loading="lazy" src="${url}" alt="Item Image">`
-          ).join('')}
-        </div>`;
-    }
-
-    const hasVariantInfo = row["variant_group_id"] && row["variant_group_id"].trim() !== "";
-
-    div.innerHTML = `
-      <div class="identifierDiv">
-        <div class="title">${row["PRODUCT_TITLE"] || "Unnamed Item"}</div>
-        <div class="sku">${row["PRODUCT_SKU"] || ""}</div>
-      </div>
-
-      <div class="imagesDiv">
-        ${imageGalleryHtml}
-      </div>
-
-      <div class="infoDiv">
-        <div><strong>Price:</strong> ${row["PRICE"] || "N/A"}</div>
-        <div><strong>RRP:</strong> ${row["rrp"] || "-"}</div>
-        <div><strong>Brand:</strong> ${row["BRAND"] || "-"}</div>
-      </div>
-
-      ${hasVariantInfo ? `
-      <div class="variationDiv">
-        <div><strong>Group ID:</strong> ${row["variant_group_id"]}</div>
-        <div><strong>Title:</strong> ${row["variant_group_title"] || ""}</div>
-        <div><strong>Type:</strong> ${row["variant_facet_type"] || ""}</div>
-        <div><strong>Group:</strong> ${row["variant_facet_group"] || ""}</div>
-        <div><strong>Value:</strong> ${row["variant_facet_value"] || ""}</div>
-      </div>
-      ` : ""}
-
-      <div class="descDiv">
-        ${row["PRODUCT_DESCRIPTION"] || ""}
-      </div>
-    `;
-
-    container.appendChild(div);
+    const placeholder = document.createElement('div');
+    placeholder.className = 'productCard';
+    placeholder.dataset.index = index;
+    container.appendChild(placeholder);
   });
+
+  observePlaceholders(filteredData);
+}
+
+function observePlaceholders(data) {
+  const observer = new IntersectionObserver((entries, obs) => {
+    entries.forEach(entry => {
+      if (!entry.isIntersecting) return;
+
+      const div = entry.target;
+      const index = parseInt(div.dataset.index, 10);
+      const row = data[index];
+      if (!row) return;
+
+      div.innerHTML = generateCardHTML(row);
+      obs.unobserve(div);
+    });
+  }, {
+    rootMargin: '200px',
+    threshold: 0.1
+  });
+
+  document.querySelectorAll('.productCard').forEach(div => observer.observe(div));
+}
+
+function generateCardHTML(row) {
+  const imageUrls = (row["IMAGES"] || "")
+    .split("|")
+    .map(url => url.trim())
+    .filter(url => url.length > 0);
+
+  const imageGalleryHtml = imageUrls.length > 0 ? `
+    <div style="display: flex; overflow-x: auto; gap: 10px; padding: 5px 0;">
+      ${imageUrls.map(url =>
+        `<img src="${url}" alt="Item Image">`
+      ).join('')}
+    </div>` : "";
+
+  const hasVariantInfo = row["variant_group_id"] && row["variant_group_id"].trim() !== "";
+
+  return `
+    <div class="identifierDiv">
+      <div class="title">${row["PRODUCT_TITLE"] || "Unnamed Item"}</div>
+      <div class="sku">${row["PRODUCT_SKU"] || ""}</div>
+    </div>
+
+    <div class="imagesDiv">
+      ${imageGalleryHtml}
+    </div>
+
+    <div class="infoDiv">
+      <div><strong>Price:</strong> ${row["PRICE"] || "N/A"}</div>
+      <div><strong>RRP:</strong> ${row["rrp"] || "-"}</div>
+      <div><strong>Brand:</strong> ${row["BRAND"] || "-"}</div>
+    </div>
+
+    ${hasVariantInfo ? `
+    <div class="variationDiv">
+      <div><strong>Group ID:</strong> ${row["variant_group_id"]}</div>
+      <div><strong>Title:</strong> ${row["variant_group_title"] || ""}</div>
+      <div><strong>Type:</strong> ${row["variant_facet_type"] || ""}</div>
+      <div><strong>Group:</strong> ${row["variant_facet_group"] || ""}</div>
+      <div><strong>Value:</strong> ${row["variant_facet_value"] || ""}</div>
+    </div>
+    ` : ""}
+
+    <div class="descDiv">
+      ${row["PRODUCT_DESCRIPTION"] || ""}
+    </div>
+  `;
 }
 
 function setupSearch() {
@@ -113,7 +134,6 @@ function setupSearch() {
   }
 
   searchBtn.addEventListener('click', performSearch);
-
   searchBox.addEventListener('keydown', e => {
     if (e.key === 'Enter') performSearch();
   });
