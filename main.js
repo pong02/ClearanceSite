@@ -44,7 +44,7 @@ function renderCatalog(filteredData) {
     if (row["Status"]?.toLowerCase() === "sold out") return;
 
     const div = document.createElement('div');
-    div.className = 'item';
+    div.className = 'productCard';
 
     const imageField = row["IMAGES"] || "";
     const imageUrls = imageField
@@ -57,15 +57,13 @@ function renderCatalog(filteredData) {
       imageGalleryHtml = `
         <div style="display: flex; overflow-x: auto; gap: 10px; padding: 5px 0;">
           ${imageUrls.map(url =>
-            `<img src="${url}" alt="Item Image">`
+            `<img loading="lazy" src="${url}" alt="Item Image">`
           ).join('')}
         </div>`;
     }
 
-    div.className = 'productCard';
-
     const hasVariantInfo = row["variant_group_id"] && row["variant_group_id"].trim() !== "";
-  
+
     div.innerHTML = `
       <div class="identifierDiv">
         <div class="title">${row["PRODUCT_TITLE"] || "Unnamed Item"}</div>
